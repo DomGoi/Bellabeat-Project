@@ -1,0 +1,359 @@
+**Daily_activity_weekday SQL**
+Table->dailyActivity_merged
+SELECT 
+  COUNT(Id) as number_of_entries,
+  FORMAT_DATE('%A', ActivityDate) as week_day,
+  SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes) as total_time,
+  SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)/60 as total_time_h,
+  (SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)/60)/24 as total_time_days,
+  (SUM(VeryActiveMinutes) / SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)) * 100 as prcent_VeryActiveMinutes,
+  (SUM(FairlyActiveMinutes) / SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)) * 100 as prcent_FairlyActiveMinutes,
+  (SUM(LightlyActiveMinutes) / SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)) * 100 as prcent_LightlyActiveMinutes,
+  (SUM(SedentaryMinutes) / SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)) * 100 as prcent_SedentaryMinutes,
+FROM `sunny-effort-399008.Daily_tables.dailyactivity_without_measurement error`
+GROUP BY week_day;
+   
+**Daily_activity_group_by_logged_days**
+Table->dailyActivity_merged
+
+SELECT 
+  Id,
+  EXTRACT (DAY FROM (MAX(ActivityDate) - MIN(ActivityDate))) as days_logged,
+  SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes) as total_time,
+  SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)/60 as total_time_h,
+  (SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)/60)/24 as total_time_days,
+  (SUM(VeryActiveMinutes) / SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)) * 100 as prcent_VeryActiveMinutes,
+  (SUM(FairlyActiveMinutes) / SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)) * 100 as prcent_FairlyActiveMinutes,
+  (SUM(LightlyActiveMinutes) / SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)) * 100 as prcent_LightlyActiveMinutes,
+  (SUM(SedentaryMinutes) / SUM(VeryActiveMinutes + FairlyActiveMinutes + LightlyActiveMinutes + SedentaryMinutes)) * 100 as prcent_SedentaryMinutes,
+FROM `sunny-effort-399008.Daily_tables.dailyactivity_without_measurement error`
+GROUP BY Id;
+
+**Distance_daily_weekdays table**
+Table-> Daily_activities
+SELECT 
+  COUNT(Id) as number_of_entries,
+  FORMAT_DATE('%A', ActivityDate) as week_day,
+  SUM(TotalSteps) as SUM_total_steps,
+  SUM(TotalDistance) as SUM_total_distance,
+  SUM(TrackerDistance) as SUM_tracker_distance,
+  (SUM(TotalDistance)-SUM(TrackerDistance)) as sum_tracker_difference,
+  CASE 
+    WHEN SUM(TotalDistance)=SUM(TrackerDistance) then'accurate measure'
+    ELSE 'not accurate measure'
+    END as accuracy,
+    SUM(VeryActiveDistance+ModeratelyActiveDistance+LightActiveDistance + SedentaryActiveDistance) as total_distance_summed,
+  (SUM(VeryActiveDistance) / SUM(VeryActiveDistance+ModeratelyActiveDistance+LightActiveDistance + SedentaryActiveDistance)) as prcent_VeryActivedistance,
+  (SUM(ModeratelyActiveDistance) / SUM(VeryActiveDistance+ModeratelyActiveDistance+LightActiveDistance + SedentaryActiveDistance))as prcent_ModeratelyActiveDistance,
+  (SUM(LightActiveDistance) / SUM(VeryActiveDistance+ModeratelyActiveDistance+LightActiveDistance + SedentaryActiveDistance))as prcent_LightlyActiveDistance
+FROM `sunny-effort-399008.Capstone_project.daily_activity`
+WHERE SedentaryActiveDistance = 0
+GROUP BY week_day;
+
+
+distance_daily_days_logged Table
+Table-> daily_activities
+
+SELECT 
+  Id,
+  EXTRACT (DAY FROM (MAX(ActivityDate) - MIN(ActivityDate))) as days_logged,
+  SUM(TotalSteps) as SUM_total_steps,
+  SUM(TotalDistance) as SUM_total_distance,
+  SUM(TrackerDistance) as SUM_tracker_distance,
+  (SUM(TotalDistance)-SUM(TrackerDistance)) as sum_tracker_difference,
+  CASE 
+    WHEN SUM(TotalDistance)=SUM(TrackerDistance) then'accurate measure'
+    ELSE 'not accurate measure'
+    END as accuracy,
+    SUM(VeryActiveDistance+ModeratelyActiveDistance+LightActiveDistance + SedentaryActiveDistance) as total_distance_summed,
+  (SUM(VeryActiveDistance) / SUM(VeryActiveDistance+ModeratelyActiveDistance+LightActiveDistance + SedentaryActiveDistance)) as prcent_VeryActivedistance,
+  (SUM(ModeratelyActiveDistance) / SUM(VeryActiveDistance+ModeratelyActiveDistance+LightActiveDistance + SedentaryActiveDistance))as prcent_ModeratelyActiveDistance,
+  (SUM(LightActiveDistance) / SUM(VeryActiveDistance+ModeratelyActiveDistance+LightActiveDistance + SedentaryActiveDistance))as prcent_LightlyActiveDistance
+FROM `sunny-effort-399008.Capstone_project.daily_activity`
+WHERE SedentaryActiveDistance = 0
+GROUP BY Id;
+
+**Daily_calories_steps_logged_days**
+
+Table->dailyActivity_merged
+
+SELECT 
+  Id,
+  EXTRACT (DAY FROM (MAX(ActivityDate) - MIN(ActivityDate))) as days_logged,
+  SUM(TotalSteps) as sum_totalsteps,
+  SUM(Calories) as sum_totalcalories
+FROM `sunny-effort-399008.Capstone_project.daily_activity`
+GROUP BY Id;
+
+**Daily_steps_weekday**
+Table->dailySteps_merged
+SELECT 
+  COUNT(Id),
+  FORMAT_DATE('%A', ActivityDay) as weekday,
+  SUM(StepTotal) as sum_totalsteps
+FROM `sunny-effort-399008.Capstone_project.daily_steps`
+GROUP BY weekday;
+
+**Correlation between steps, distance and calories**
+SELECT 
+  Id,
+  FORMAT_DATE('%A', ActivityDate) as week_day,
+  Calories,
+  TotalDistance,
+  TotalSteps
+FROM `sunny-effort-399008.Capstone_project.daily_activity`
+GROUP BY Id,week_day, Calories,TotalSteps,TotalDistance;
+
+Daily_calories_weekday
+Table->dailyCalories_merged
+
+SELECT 
+  Id,
+  ActivityDay,
+  FORMAT_DATE('%A',ActivityDay) as week_day,
+  Calories
+   FROM `sunny-effort-399008.Capstone_project.daily_calories` 
+
+For the rest of the tables I did use command:
+PARSE_TIMESTAMP('%m/%d/%Y %H:%M:%S %p','Date_column'), to covert the date from string back to since it was impossible to import the csv
+file with AM/PM as a part of the date into Bigquery database.
+
+**Weight_log_weekdays**
+Table->weightLogInfo_merged
+General table
+SELECT
+  Distinct LogId,
+  Id,
+  PARSE_TIMESTAMP('%m/%d/%Y %H:%M:%S %p',Date) as Date,
+  WeightKg,
+  BMI,
+  IsManualReport
+FROM `sunny-effort-399008.Capstone_project.weightlog`; 
+
+
+I have decided on Kg and to omitt fat since there was a lot of null records. Also I got rid of duplicate
+entries.
+
+
+**HR_table**->heartrate_seconds_merged
+
+SELECT
+  Id,
+  PARSE_TIMESTAMP('%m/%d/%Y %H:%M:%S %p',Time) as Time,
+  FORMAT_DATE('%A', (PARSE_TIMESTAMP('%m/%d/%Y %H:%M:%S %p',Time))) as weekday,
+  Value
+FROM `sunny-effort-399008.Capstone_project.heart_rate`;
+
+SELECT 
+  weekday,
+  COUNT(DISTINCT Id) as num_people_logging,
+  COUNT(Id) as num_of_entries,
+  MAX(Value) as max_HR,
+  ROUND(AVG(Value),2) as avg_HR,
+  MIN(Value) as min_HR
+ FROM `sunny-effort-399008.Capstone_project.HR` 
+ GROUP BY weekday;
+ 
+ SELECT 
+  Id,
+  COUNT(Time) as num_of_loggs,
+  MAX(Value) as max_HR,
+  ROUND(AVG(Value),2) as avg_HR,
+  MIN(Value) as min_HR
+ FROM `sunny-effort-399008.Capstone_project.HR` 
+ GROUP BY Id;
+
+Table of hear_rate by hour through the week-> R analysis
+SELECT 
+ Id,
+ FORMAT_DATE('%A', PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p', Time)) AS weekday,
+ EXTRACT(HOUR FROM PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p', Time)) AS hour,
+ Value
+ FROM `sunny-effort-399008.Capstone_project.heart_rate`
+GROUP BY weekday, hour, Value, Id
+
+**METs**
+Table-METs
+General table to obtain weekdays and hours
+SELECT
+  Id,
+  PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p', ActivityMinute) AS ActivityMinute,
+  FORMAT_DATE('%A', PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p', ActivityMinute)) AS weekday,
+  EXTRACT(HOUR FROM PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p', ActivityMinute)) AS hour,
+  SUM(METs) AS total_METs
+FROM `sunny-effort-399008.Capstone_project.METs`
+GROUP BY Id, weekday, hour, ActivityMinute
+ORDER BY Id, weekday, hour;
+
+Table with summed entries and METs for every minute throught weekdays. (Smaller amount of records)
+SELECT 
+COUNT(Id) as entry_num,
+ActivityMinute_weekday,
+activity_minute,
+SUM(METs) as sum_mets
+ FROM `sunny-effort-399008.Daily_tables.METs` 
+ GROUP BY ActivityMinute_weekday, activity_minute
+ ORDER BY COUNT(Id);
+
+Table hourly METs for each weekday-RStudio
+SELECT 
+  COUNT(Id) as num_of_entries,
+  COUNT(DISTINCT Id) as num_of_people,
+  weekday,
+  hour,
+  AVG(total_METs) average_METs
+FROM `sunny-effort-399008.Daily_tables.Mets`
+GROUP BY weekday, hour;
+
+**HEART RATE **
+
+HR_table->heartrate_seconds_merged
+
+SELECT
+  Id,
+  PARSE_TIMESTAMP('%m/%d/%Y %H:%M:%S %p',Time) as Time,
+  FORMAT_DATE('%A', (PARSE_TIMESTAMP('%m/%d/%Y %H:%M:%S %p',Time))) as weekday,
+  Value
+FROM `sunny-effort-399008.Capstone_project.heart_rate`;
+
+**MERGING METs AND HR table**
+SELECT
+  COUNT(h.Id) as num_of_entries,
+  COUNT(DISTINCT h.Id) as num_of_people,
+  h.weekday as weekday,
+  h.hour as hour,
+  SUM(h.Value) as sum_HR_value,
+  ROUND((SUM(h.Value)/COUNT(h.Id))/COUNT(DISTINCT h.Id), 2) as average_HR_per_person_per_log,
+  SUM(m.total_METs) as METs_sum,
+  ROUND((SUM(m.total_METs)/COUNT(h.Id))/COUNT(DISTINCT h.Id), 2) as average_METs_per_person_per_log
+FROM `sunny-effort-399008.Capstone_project.HR_R` h 
+LEFT JOIN `sunny-effort-399008.Daily_tables.Mets` m 
+ON h.Id = m.Id AND h.hour = m.hour AND h.weekday = m.weekday
+GROUP BY hour, weekday;
+
+
+
+**Hour_intensity**
+Table-> hour_intensity
+
+SELECT 
+Id,
+PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p',ActivityHour) AS ActivityHour,
+FORMAT_DATE('%A', (PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p',ActivityHour))) as weekday,
+EXTRACT(HOUR FROM PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', ActivityHour)) as hour,
+TotalIntensity,
+AverageIntensity
+FROM `sunny-effort-399008.Capstone_project.hour_intesnsity`
+
+**Hour_calories per person per log**
+Table-> hour_calories
+SELECT  
+    COUNT(Id) as num_of_entries,
+    COUNT(DISTINCT Id) as num_people,
+    weekday,
+    hour,
+    SUM(AverageIntensity) as avergae_sum,
+    ROUND((SUM(AverageIntensity)/COUNT(Id))/COUNT(DISTINCT Id),2) as average_intensity_per_person_per_log 
+FROM `sunny-effort-399008.Daily_tables.hour_intensity_hour`
+GROUP BY weekday, hour;
+
+SELECT 
+Id,
+PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p',ActivityHour) AS ActivityHour,
+FORMAT_DATE('%A', (PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p',ActivityHour))) as weekday,
+EXTRACT(HOUR FROM PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', ActivityHour)) as hour,
+Calories
+ FROM `sunny-effort-399008.Capstone_project.hour_calories`
+
+**Calories per person per log**
+
+SELECT 
+    COUNT(Id) as num_of_entries,
+    COUNT(DISTINCT Id) as num_people,
+    weekday,
+    hour,
+    SUM(Calories) as cal_sum,
+    ROUND((SUM(Calories)/COUNT(Id))/COUNT(DISTINCT Id),2) as average_cal_per_person_per_log
+ FROM `sunny-effort-399008.Daily_tables.hour_calories_weekday_hour`
+ GROUP BY weekday,hour;
+
+**Hour_steps**
+Table-> hour_steps
+
+SELECT 
+Id,
+PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p',ActivityHour) AS ActivityHour,
+FORMAT_DATE('%A', (PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p',ActivityHour))) as weekday,
+EXTRACT(HOUR FROM PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', ActivityHour)) as hour,
+TotalSteps
+ FROM `sunny-effort-399008.Daily_tables.hour_steps`
+
+Average steps per entry per person:
+SELECT 
+COUNT(Id) as num_of_entries,
+COUNT(DISTINCT Id) as num_of_people,
+weekday,
+hour,
+SUM(TotalSteps) as total_steps_count,
+ROUND((SUM(TotalSteps)/COUNT(Id))/COUNT (DISTINCT Id),2) as avergage_steps_per_person_per_entry
+FROM `sunny-effort-399008.Daily_tables.steps_per_hour`
+GROUP BY weekday,hour;
+
+
+**MERGING HOURLY DATA TABLES**
+SELECT 
+c.hour,
+c.weekday,
+c.num_of_entries as calories_entries,
+i.num_of_entries as intensity_entries,
+s.num_of_entries as steps_entries,
+c.average_cal_per_person_per_log,
+i.average_intensity_per_person_per_log,
+s.avergage_steps_per_person_per_entry
+ FROM `sunny-effort-399008.HOurly_data.calories` c
+ JOIN `sunny-effort-399008.HOurly_data.steps`s ON c.hour=s.hour AND c.weekday=s.weekday
+JOIN `sunny-effort-399008.HOurly_data.intensity` i ON c.hour=i.hour AND c.weekday=i.weekday;
+
+
+**Sleep_table_weekday**
+Table->sleepDay_merged
+There was a problem with date formatting since it did have AM/PM in it. However here all hours were the same 
+that is why I just deleted the AM/PM in the Notepad++ and change formatting from 4/12/2016 to 4-12-2016, so that
+SQL in Bigquery didn't have a problem recognizing the date as a timestamp.
+
+Sleep_day_weekday
+
+SELECT 
+  Id,
+  FORMAT_DATE('%A',SleepDay) as weekday,
+  TotalTimeInBed,
+  TotalMinutesAsleep,
+  TotalSleepRecords
+FROM `sunny-effort-399008.Capstone_project.sleep_day`
+GROUP BY Id, SleepDay, TotalSleepRecords, TotalMinutesAsleep, TotalTimeInBed;
+
+Sleep_day_logged_days
+
+SELECT 
+  Id,
+  EXTRACT (DAY FROM (MAX(CAST(SleepDay as DATETIME)) - MIN(CAST(SleepDay as DATETIME))))+1 as days_logged,
+  SUM(TotalTimeInBed) as totaltimesinbed,
+  SUM(TotalMinutesAsleep) as totalminutesasleep,
+  SUM(TotalSleepRecords) as totalsleeprecords
+FROM `sunny-effort-399008.Capstone_project.sleep_day`
+GROUP BY Id;
+
+**Sleep_amount_Assesed**
+SELECT
+   Id,
+  FORMAT_DATE('%A',SleepDay) as weekday,
+  TotalTimeInBed,
+  (TotalMinutesAsleep/60) as hours_sleep,
+  CASE
+  WHEN (TotalMinutesAsleep/60) >= 7.0 THEN 'good amount of sleep'
+  ELSE "not enough sleep"
+  END as sleep_amount,
+  TotalTimeInBed-TotalMinutesAsleep as Totalmiutesawake,
+  TotalSleepRecords
+FROM `sunny-effort-399008.Capstone_project.sleepday`
+GROUP BY Id, SleepDay, TotalSleepRecords, TotalMinutesAsleep, TotalTimeInBed;
