@@ -177,7 +177,7 @@ other days suffer from a visible decrease in a number of entries, with
 Monday counting only 108 entries, equaling to more than 20% decrease.
 
 <figure>
-<img src="Number_of_entries_through_the_week.png"
+<img src="Plots/Number_of_entries_through_the_week.png"
 alt="Fig.2 Number of entries on daily activity minutes submitted through the week." />
 <figcaption aria-hidden="true">Fig.2 Number of entries on daily activity
 minutes submitted through the week.</figcaption>
@@ -187,7 +187,7 @@ minutes submitted through the week.</figcaption>
 60.6% of all user’s adherence.
 
 <figure>
-<img src="High_user_number_logging_for-30%20days.png"
+<img src="Plots/High_user_number_logging_for-30%20days.png"
 alt="Fig.3 Users number logginf for particular amount of days." />
 <figcaption aria-hidden="true">Fig.3 Users number logginf for particular
 amount of days.</figcaption>
@@ -211,7 +211,7 @@ time being very active (1.58% - 2.01%) than fairly active (1.04% -
 1.35%).
 
 <figure>
-<img src="Percentage_time_division_for_activity_throughout_the_week.png"
+<img src="Plots/Percentage_time_division_for_activity_throughout_the_week.png"
 alt="Fig.4 Precentage of time in minutes dedicated by user for activity with given intensity." />
 <figcaption aria-hidden="true">Fig.4 Precentage of time in minutes
 dedicated by user for activity with given intensity.</figcaption>
@@ -258,7 +258,7 @@ and Tuesday with the highest count (139). Equaling to 22% difference
 between the highest and smallest value.
 
 <figure>
-<img src="distance_log_weekday.png"
+<img src="Plots/distance_log_weekday.png"
 alt="Fig.5 Number of entries on daily activity distance submitted through the week." />
 <figcaption aria-hidden="true">Fig.5 Number of entries on daily activity
 distance submitted through the week.</figcaption>
@@ -273,7 +273,7 @@ between total distance, tracker distance, and summed distance for all
 activity intensity types, which in theory should be equal.
 
 <figure>
-<img src="Differences%20between%20distance%20registered.png"
+<img src="Plots/Differences%20between%20distance%20registered.png"
 alt="Fig.6 Difference bewteen distance registered by different values." />
 <figcaption aria-hidden="true">Fig.6 Difference bewteen distance
 registered by different values.</figcaption>
@@ -287,7 +287,7 @@ an unsettling pattern where with an increased amount of entries the
 mistake is only getting bigger.
 
 <figure>
-<img src="tracker_mistake.png"
+<img src="Plots/tracker_mistake.png"
 alt="Fig.7 Mistake between tracker difference and total distance measured by the devices of the users." />
 <figcaption aria-hidden="true">Fig.7 Mistake between tracker difference
 and total distance measured by the devices of the users.</figcaption>
@@ -300,7 +300,7 @@ Saturday(8152). While the least steps number can be observe on
 Thursday(7405) and Sunday (6933).
 
 <figure>
-<img src="steps_weekday_count.png"
+<img src="Plots/steps_weekday_count.png"
 alt="Fig.8 Average steps count for each day of the week." />
 <figcaption aria-hidden="true">Fig.8 Average steps count for each day of
 the week.</figcaption>
@@ -367,7 +367,7 @@ number appears on Monday and equals 120, which can be calculated as a
 21% decrease in entry number.
 
 <figure>
-<img src="num_of_entries_weekday_cal.png"
+<img src="Plots/num_of_entries_weekday_cal.png"
 alt="Fig.9 Number of calories entries through the week." />
 <figcaption aria-hidden="true">Fig.9 Number of calories entries through
 the week.</figcaption>
@@ -383,7 +383,7 @@ Saturday and Thursday. The more red the bar is the bigger the standard
 deviation.
 
 <figure>
-<img src="median_caloric.png"
+<img src="Plots/median_caloric.png"
 alt="Fig.10 Median caloric intake of the users with standard deviation through the week." />
 <figcaption aria-hidden="true">Fig.10 Median caloric intake of the users
 with standard deviation through the week.</figcaption>
