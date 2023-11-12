@@ -114,7 +114,7 @@ not to forget it.
 More general analyses were carried out in Google Sheets, after data
 cleaning and filtering in SQL (BigQuery - SQL codes can be found [here
 in the “CSV files”
-folder](https://github.com/DomGoi/Bellabeat-Project.git/)). However, due
+folder](https://github.com/DomGoi/Bellabeat-Project/tree/main/CSV%20files)). However, due
 to the limited amount of data that can be imported to the spreadsheets
 while simultaneously keeping up good program performance, for data with
 more records, I have decided to use R.
@@ -161,7 +161,7 @@ BigQuery. Datasets with the highest count of users which equals 33 are:
   fluctuations.
 
 <figure>
-<img src="general_data.png"
+<img src="Plots/general_data.png"
 alt="Fig.1 General analysis of the user count for each picked data set accordding to their category." />
 <figcaption aria-hidden="true">Fig.1 General analysis of the user count
 for each picked data set accordding to their category.</figcaption>
